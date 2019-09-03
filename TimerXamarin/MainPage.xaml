@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ViewModels="clr-namespace:TimerXamarin.ViewModel"
+             mc:Ignorable="d"
+             x:Class="TimerXamarin.MainPage"
+             BackgroundColor="#1b1b1e">
+    <ContentPage.Resources>
+        <ViewModels:MainPageViewModel x:Key="MainPageVM"/>
+        <Style TargetType="Button" Class="DefaultButton">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="DarkSlateBlue"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </ContentPage.Resources>
+    <StackLayout BindingContext="{StaticResource Key=MainPageVM}">
+        
+        <Label Text="{Binding TimerValue, StringFormat='{0:hh\\:mm\\:ss\\:ff}'}" 
+               TextColor="White"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" />
+        <Button Text="Zerar" IsVisible="False" Command="{Binding ResetTimerCommand}"
+                StyleClass="DefaultButton">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding TimerState}" TargetType="Button"
+                                     Value="{x:Static ViewModels:TimerState.Stopped}">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Command="{Binding TimerCommand}"
+                StyleClass="DefaultButton">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding TimerState}"  TargetType="Button"
+                                     Value="{x:Static ViewModels:TimerState.None}">
+                            <Setter Property="Text" Value="Começar"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TimerState}" TargetType="Button"
+                                     Value="{x:Static ViewModels:TimerState.Running}">
+                            <Setter Property="Text" Value="Parar"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TimerState}" TargetType="Button"
+                                     Value="{x:Static ViewModels:TimerState.Stopped}">
+                            <Setter Property="Text" Value="Continuar"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackLayout>
+
+</ContentPage>
